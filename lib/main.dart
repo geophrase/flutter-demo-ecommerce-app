@@ -29,14 +29,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,6 +40,18 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: <Widget>[
             const SizedBox(height: 16),
+        Align(
+          alignment: Alignment.centerRight,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 32),
+            child: OutlinedButton.icon(
+                onPressed: () => const {},
+                icon: const Icon(Icons.login),
+                label: const Text('Sign In'),
+                iconAlignment: IconAlignment.start,
+              ),
+          )),
+            SizedBox(height: 32,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               spacing: 16,
