@@ -6,9 +6,7 @@ final List<Map<String, dynamic>> items = [
 ];
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+  const MyHomePage({super.key,});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -20,7 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Text('Demo Ecommerce Home'),
       ),
       body: Center(
         child: Column(
@@ -101,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
             FilledButton.icon(
               onPressed: () => {},
               icon: const Icon(Icons.shopping_cart),
-              label: const Text('Go to cart'),
+              label: const Text('Go to cart (0)'),
               iconAlignment: IconAlignment.start,
             ),
           ],
