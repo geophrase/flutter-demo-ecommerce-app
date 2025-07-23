@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../main.dart';
+import '../cart/cart_page.dart';
+
 
 final List<Map<String, dynamic>> items = [
-  {'name': 'T-Shirt', 'price': 190, 'image': 'tshirt'},
-  {'name': 'Shoe', 'price': 400, 'image': 'shoe'},
+  {'name': 'T-Shirt', 'price': 190, 'id': 'tshirt'},
+  {'name': 'Shoe', 'price': 400, 'id': 'shoe'},
 ];
 
 class MyHomePage extends StatefulWidget {
@@ -13,8 +18,41 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  late MyAppState _appState;
+  Set<String> _cartItems = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _appState = Provider.of<MyAppState>(context, listen: false);
+  }
+
+  void _addToCart(String item) {
+    _appState.addCartItem(item);
+    _cartItems.add(item);
+    setState(() {
+      _cartItems = _cartItems;
+    });
+  }
+
+  void _removeFromCart(String item) {
+    _appState.removeCartItem(item);
+    _cartItems.remove(item);
+    setState(() {
+      _cartItems = _cartItems;
+    });
+  }
+
+  void _goToCart() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const CartPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    print('_cartItems: $_cartItems');
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -45,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Align(
                     alignment: Alignment.center, // Center horizontally
                     child: SizedBox(
-                      height: 300,
+                      height: 350,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         shrinkWrap: true,
@@ -62,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Image.asset('assets/${item['image']}.png'),
+                                    Image.asset('assets/${item['id']}.png'),
                                     SizedBox(height: 8),
                                     Text(
                                       item['name'],
@@ -78,9 +116,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                     SizedBox(height: 8),
                                     OutlinedButton.icon(
-                                      onPressed: () => {},
-                                      icon: const Icon(Icons.add_shopping_cart),
-                                      label: const Text('Add to cart'),
+                                      onPressed: () => _cartItems.contains(item['id']) ? _removeFromCart(item['id']) : _addToCart(item['id']),
+                                      icon: Icon(_cartItems.contains(item['id']) ? Icons.remove_shopping_cart : Icons.add_shopping_cart),
+                                      label: Text(_cartItems.contains(item['id']) ? 'Remove' : 'Add'),
                                       iconAlignment: IconAlignment.start,
                                     ),
                                   ],
@@ -97,9 +135,9 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             SizedBox(height: 32),
             FilledButton.icon(
-              onPressed: () => {},
+              onPressed: _goToCart,
               icon: const Icon(Icons.shopping_cart),
-              label: const Text('Go to cart (0)'),
+              label: Text('Go to cart (${_cartItems.length.toString()})'),
               iconAlignment: IconAlignment.start,
             ),
           ],
