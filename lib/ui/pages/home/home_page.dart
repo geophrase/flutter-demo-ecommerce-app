@@ -2,13 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../main.dart';
+import '../../../utils/constants.dart';
 import '../cart/cart_page.dart';
 
-
-final List<Map<String, dynamic>> items = [
-  {'name': 'T-Shirt', 'price': 190, 'id': 'tshirt'},
-  {'name': 'Shoe', 'price': 400, 'id': 'shoe'},
-];
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key,});
@@ -19,12 +15,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late MyAppState _appState;
-  Set<String> _cartItems = {};
+  late Set<String> _cartItems;
 
   @override
   void initState() {
     super.initState();
     _appState = Provider.of<MyAppState>(context, listen: false);
+    _cartItems = _appState.cartItems;
   }
 
   void _addToCart(String item) {
@@ -47,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const CartPage()),
-    );
+    ).then((_) => setState(() {}));
   }
 
   @override
@@ -87,9 +84,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         shrinkWrap: true,
-                        itemCount: items.length,
+                        itemCount: shoppingItems.length,
                         itemBuilder: (context, index) {
-                          final item = items[index];
+                          final item = shoppingItems[index];
 
                           return Card(
                             child: Padding(
